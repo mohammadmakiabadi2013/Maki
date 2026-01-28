@@ -1,32 +1,44 @@
-<p dir="ltr">&lt;!DOCTYPE html&gt;<br>
-&lt;html&gt;<br>
-&lt;head&gt;<br>
-&nbsp; &lt;meta charset="UTF-8"&gt;<br>
-&nbsp; &lt;title&gt;Robot Control&lt;/title&gt;<br>
-&lt;/head&gt;</p>
-<p dir="ltr">&lt;body&gt;</p>
-<p dir="ltr">&lt;h2&gt;Internet Robot Control Panel&lt;/h2&gt;</p>
-<p dir="ltr">&lt;button onclick="sendCmd('go')"&gt;GO&lt;/button&gt;<br>
-&lt;button onclick="sendCmd('back')"&gt;BACK&lt;/button&gt;<br>
-&lt;button onclick="sendCmd('left')"&gt;LEFT&lt;/button&gt;<br>
-&lt;button onclick="sendCmd('right')"&gt;RIGHT&lt;/button&gt;<br>
-&lt;button onclick="sendCmd('stop')"&gt;STOP&lt;/button&gt;</p>
-<p dir="ltr">&lt;br&gt;&lt;br&gt;</p>
-<p dir="ltr">&lt;button onclick="sendCmd('ledon')"&gt;LED ON&lt;/button&gt;<br>
-&lt;button onclick="sendCmd('ledoff')"&gt;LED OFF&lt;/button&gt;</p>
-<p dir="ltr">&lt;script src="https://unpkg.com/mqtt/dist/mqtt.min.js"&gt;&lt;/script&gt;</p>
-<p dir="ltr">&lt;script&gt;</p>
-<p dir="ltr">const broker = "wss://broker.hivemq.com:8000/mqtt";<br>
-const topic = "tabandeh/robot";</p>
-<p dir="ltr">const client = mqtt.connect(broker);</p>
-<p dir="ltr">client.on("connect", function () {<br>
-&nbsp; console.log("MQTT Connected");<br>
-});</p>
-<p dir="ltr">function sendCmd(cmd) {<br>
-&nbsp; client.publish(topic, cmd);<br>
-&nbsp; alert("Command Sent: " + cmd);<br>
-}</p>
-<p dir="ltr">&lt;/script&gt;</p>
-<p dir="ltr">&lt;/body&gt;<br>
-&lt;/html&gt;<br>
-</p>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Internet Robot Control</title>
+</head>
+
+<body>
+
+<h2>Robot Control Panel</h2>
+
+<button onclick="sendCmd('go')">GO</button>
+<button onclick="sendCmd('back')">BACK</button>
+<button onclick="sendCmd('left')">LEFT</button>
+<button onclick="sendCmd('right')">RIGHT</button>
+<button onclick="sendCmd('stop')">STOP</button>
+
+<br><br>
+
+<button onclick="sendCmd('ledon')">LED ON</button>
+<button onclick="sendCmd('ledoff')">LED OFF</button>
+
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+<script>
+
+const broker = "wss://broker.hivemq.com:8000/mqtt";
+const topic = "tabandeh/robot";
+
+const client = mqtt.connect(broker);
+
+client.on("connect", function () {
+  console.log("MQTT Connected");
+});
+
+function sendCmd(cmd) {
+  client.publish(topic, cmd);
+  alert("Sent: " + cmd);
+}
+
+</script>
+
+</body>
+</html>
