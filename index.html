@@ -1,24 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Internet Robot Control</title>
+<title>Robot Control Panel</title>
+
+<style>
+
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color: white;
+  text-align: center;
+}
+
+.container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+.status {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.btn {
+  width: 90px;
+  height: 60px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  margin: 8px;
+  background: #00c6ff;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+  background: #00ffea;
+}
+
+.stop {
+  background: #ff4b2b;
+  color: white;
+}
+
+.led {
+  background: #ffd000;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+</style>
 </head>
 
 <body>
 
-<h2>Robot Control Panel</h2>
+<div class="container">
+  <div class="card">
 
-<button onclick="sendCmd('go')">GO</button>
-<button onclick="sendCmd('back')">BACK</button>
-<button onclick="sendCmd('left')">LEFT</button>
-<button onclick="sendCmd('right')">RIGHT</button>
-<button onclick="sendCmd('stop')">STOP</button>
+    <h2>🚗 Robot Control Panel</h2>
 
-<br><br>
+    <div class="status" id="status">
+      🔴 Disconnected
+    </div>
 
-<button onclick="sendCmd('ledon')">LED ON</button>
-<button onclick="sendCmd('ledoff')">LED OFF</button>
+    <div class="row">
+      <button class="btn" onclick="sendCmd('go')">▲</button>
+    </div>
+
+    <div class="row">
+      <button class="btn" onclick="sendCmd('left')">◀</button>
+      <button class="btn stop" onclick="sendCmd('stop')">■</button>
+      <button class="btn" onclick="sendCmd('right')">▶</button>
+    </div>
+
+    <div class="row">
+      <button class="btn" onclick="sendCmd('back')">▼</button>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <button class="btn led" onclick="sendCmd('ledon')">LED ON</button>
+      <button class="btn led" onclick="sendCmd('ledoff')">LED OFF</button>
+    </div>
+
+  </div>
+</div>
+
 
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
@@ -27,15 +115,20 @@
 const broker = "wss://broker.hivemq.com:8000/mqtt";
 const topic = "tabandeh/robot";
 
+const statusText = document.getElementById("status");
+
 const client = mqtt.connect(broker);
 
 client.on("connect", function () {
-  console.log("MQTT Connected");
+  statusText.innerHTML = "🟢 Connected";
+});
+
+client.on("offline", function () {
+  statusText.innerHTML = "🔴 Offline";
 });
 
 function sendCmd(cmd) {
   client.publish(topic, cmd);
-  alert("Sent: " + cmd);
 }
 
 </script>
